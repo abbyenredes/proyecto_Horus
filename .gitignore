@@ -1,2 +1,4 @@
 .venv
 .env
+_pycaches
+__pycache__

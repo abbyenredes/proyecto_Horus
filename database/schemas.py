@@ -53,3 +53,6 @@ def get_user_area_visits(user_area_visits_collection):
             "was_present": False
         }
     ]
+    
+def all_user_area_visits(user_area_visits_collection):
+    return [get_user_area_visits(user_area_visits_collection) for user_area_visits_collection in user_area_visits_collection]

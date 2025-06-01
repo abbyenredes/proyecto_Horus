@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter Web Page</title>
+    <style>
+        /* Estilos principales */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: #2c3e50;
+        }
+
+        .header {
+            height: 80px;
+            background-color: white;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 140px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background-color: #ebf5fb;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            background-color: white;
+        }
+
+        .age-range {
+            display: flex;
+            gap: 10px;
+        }
+
+        .time-picker {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .time-display {
+            font-weight: bold;
+        }
+
+        .generate-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .image-container {
+            flex: 1;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer {
+            height: 60px;
+            background-color: rgba(52, 152, 219, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            color: #2980b9;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <img src="logo.png" alt="Logo de mi app" style="height: 40px;">
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Filtros</h2>
+
+            <form id="filtersForm">
+                <!-- Rango de Edad -->
+                <div class="form-group">
+                    <label>Rango de Edad</label>
+                    <div class="age-range">
+                        <input type="number" id="minAge" value="18" min="0" max="100">
+                        <input type="number" id="maxAge" value="60" min="0" max="100">
+                    </div>
+                </div>
+
+                <!-- Sexo -->
+                <div class="form-group">
+                    <label>Sexo</label>
+                    <select id="gender">
+                        <option value="No introducir">No introducir</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Masculino">Masculino</option>
+                    </select>
+                </div>
+
+                <!-- Horario -->
+                <div class="form-group">
+                    <label>Rango de Hora (24H)</label>
+                    <div class="time-picker">
+                        <span id="startTimeDisplay">09:00</span>
+                        <input type="time" id="startTime" value="09:00">
+                    </div>
+                    <div class="time-picker">
+                        <span id="endTimeDisplay">17:00</span>
+                        <input type="time" id="endTime" value="17:00">
+                    </div>
+                </div>
+
+                <!-- Botón Generate -->
+                <button type="submit" class="generate-btn">
+                    <span>Generate</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Contenedor de Imagen -->
+        <div class="image-container">
+            <iframe id="mapFrame" src="mapa_calor_madrid.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer" id="description">
+        Aquí aparecerá la descripción de la imagen generada.
+    </div>
+
+    <script>
+        // Contador de mapas (del 1 al 5)
+        let currentMap = 1;
+        const totalMaps = 5;
+
+        // Lógica principal
+        document.getElementById('filtersForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Obtener valores del formulario
+            const minAge = document.getElementById('minAge').value;
+            const maxAge = document.getElementById('maxAge').value;
+            const gender = document.getElementById('gender').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+
+            // Validación básica
+            if (!minAge || !maxAge || !startTime || !endTime) {
+                alert('Por favor complete todos los campos');
+                return;
+            }
+
+            // Formatear hora para mostrar
+            function formatTime(time) {
+                return time;
+            }
+
+            // Actualizar descripción
+            const description = `Imagen generada con filtros: ${minAge}-${maxAge} años, ${gender}, de ${formatTime(startTime)} a ${formatTime(endTime)}.`;
+            document.getElementById('description').textContent = description;
+
+            // Cambiar el iframe al siguiente mapa
+            currentMap = (currentMap % totalMaps) + 1;  // Ciclo 1 -> 2 -> ... -> 5 -> 1
+            const newSrc = `mapa_calor_${currentMap}.html`;
+
+            document.getElementById('mapFrame').src = newSrc;
+        });
+
+        // Actualizar visualización de horas
+        function updateTimeDisplay(inputId, displayId) {
+            document.getElementById(inputId).addEventListener('change', function () {
+                document.getElementById(displayId).textContent = this.value;
+            });
+        }
+
+        updateTimeDisplay('startTime', 'startTimeDisplay');
+        updateTimeDisplay('endTime', 'endTimeDisplay');
+    </script>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 # validar datos y guardar en MongoDB
 from pydantic import BaseModel
-from datatime import datetime
+from datetime import datetime
 
 
 # modelado de datos
@@ -8,7 +8,7 @@ class Areas_collection(BaseModel):
     id: str
     city: str
     neighborhood: str
-    center: (float, float)  # Tuple for latitude and longitude
+    center: list[float]  # Tuple for latitude and longitude
     radius_meters: int 
     
 
@@ -18,7 +18,7 @@ class Subarea_collection(BaseModel):
     layer: int
     latitud: float
     name: str
-    center: (float, float)  # Tuple for latitude and longitude
+    center: list[float]  # Tuple for latitude and longitude
     radio_meters: int 
   
 class  user_area_visits_collection(BaseModel):

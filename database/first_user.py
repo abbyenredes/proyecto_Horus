@@ -1,14 +1,14 @@
 from pymongo import MongoClient
 from datetime import datetime, timezone
 
-uri = "mongodb+srv://admin:Password@cluster0.j9n8ymo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+uri = "mongodb+srv://admin:"
 client = MongoClient(uri)
 # Base de datos y colección
 db = client["madrid42"]
 
 users = db["users"]
 
-customer_phone_number = "+34646609563"
+customer_phone_number = "+34"
 
 users.insert_one({"_id": customer_phone_number,
                   "location": {
